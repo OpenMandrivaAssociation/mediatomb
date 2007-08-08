@@ -1,14 +1,14 @@
 # Spec file taken from upstream, thanks. -AdamW 2007/06
 
 %define name mediatomb 
-%define version 0.9.1
+%define version 0.10.0
 %define release %mkrel 1
 
 Version: %{version}
 Summary: UPnP AV MediaServer 
 Name: %{name}
 Release: %{release}
-License: GPL
+License: GPLv2
 Group: Networking/Remote access
 Source0: http://downloads.sourceforge.net/mediatomb/%{name}-%{version}.tar.gz
 Source1: mediatomb.logrotate
@@ -16,6 +16,9 @@ Source1: mediatomb.logrotate
 Patch0: mediatomb-0.9.1-initinfo.patch
 # Patches it to use our new config directory - AdamW 2007/06
 Patch1: mediatomb-0.9.1-config.patch
+# Fixes IP address test in spec for non-English locales (I hope all of them)
+# - thanks to Erwan for the pointer
+Patch2: mediatomb-0.10.0-ip_address.patch
 URL: http://mediatomb.cc
 Buildroot: %{_tmppath}/%{name}-%{version}-buildroot 
 BuildRequires: sqlite3-devel
@@ -34,6 +37,7 @@ MediaTomb - UPnP AV Mediaserver for Linux.
 %setup -q
 %patch0 -p1 -b .init
 %patch1 -p1 -b .config
+%patch2 -p1 -b .ip
 
 %build
 # configure script doesn't know where we keep the libjs headers - AdamW 2007/06
@@ -78,7 +82,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc README README.UTF_8 AUTHORS ChangeLog COPYING INSTALL doc/doxygen.conf
+%doc README README.UTF_8 AUTHORS ChangeLog INSTALL doc/doxygen.conf
 %doc doc/scripting.txt doc/scripting_utf8.txt
 %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/%{name}
