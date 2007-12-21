@@ -20,6 +20,7 @@ Patch1: mediatomb-0.9.1-config.patch
 # - thanks to Erwan for the pointer
 Patch2: mediatomb-0.10.0-ip_address.patch
 URL: http://mediatomb.cc
+Buildroot: %{_tmppath}/%{name}-%{version}-buildroot 
 BuildRequires: sqlite3-devel
 BuildRequires: libmagic-devel
 BuildRequires: js-devel
