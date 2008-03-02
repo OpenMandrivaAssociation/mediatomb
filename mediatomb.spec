@@ -18,6 +18,9 @@ BuildRequires:	js-devel
 BuildRequires:	libid3-devel
 BuildRequires:	taglib-devel
 BuildRequires:	libexif-devel
+BuildRequires:	curl-devel
+BuildRequires:	ffmpeg-devel
+BuildRequires:	expat-devel
 BuildRequires:	file
 
 %description
