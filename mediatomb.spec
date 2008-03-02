@@ -1,34 +1,24 @@
 # Spec file taken from upstream, thanks. -AdamW 2007/06
 
-%define name mediatomb 
-%define version 0.10.0
-%define release %mkrel 1
-
-Version: %{version}
-Summary: UPnP AV MediaServer 
-Name: %{name}
-Release: %{release}
-License: GPLv2
-Group: Networking/Remote access
-Source0: http://downloads.sourceforge.net/mediatomb/%{name}-%{version}.tar.gz
-Source1: mediatomb.logrotate
+Name:		mediatomb
+Summary:	UPnP AV MediaServer 
+Version:	0.11.0
+Release:	%{mkrel 1}
+License:	GPLv2
+Group:		Networking/Remote access
+Source0:	http://downloads.sourceforge.net/mediatomb/%{name}-%{version}.tar.gz
+Source1:	mediatomb.logrotate
 # Adds parallel init info to init.d script - AdamW 2007/06
-Patch0: mediatomb-0.9.1-initinfo.patch
-# Patches it to use our new config directory - AdamW 2007/06
-Patch1: mediatomb-0.9.1-config.patch
-# Fixes IP address test in spec for non-English locales (I hope all of them)
-# - thanks to Erwan for the pointer
-Patch2: mediatomb-0.10.0-ip_address.patch
-URL: http://mediatomb.cc
-Buildroot: %{_tmppath}/%{name}-%{version}-buildroot 
-BuildRequires: sqlite3-devel
-BuildRequires: libmagic-devel
-BuildRequires: js-devel
-BuildRequires: libid3-devel
-BuildRequires: taglib-devel
-BuildRequires: libexif-devel
-
-BuildRequires: file
+Patch0:		mediatomb-0.11.0-initinfo.patch
+URL:		http://mediatomb.cc
+Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot 
+BuildRequires:	sqlite3-devel
+BuildRequires:	libmagic-devel
+BuildRequires:	js-devel
+BuildRequires:	libid3-devel
+BuildRequires:	taglib-devel
+BuildRequires:	libexif-devel
+BuildRequires:	file
 
 %description
 MediaTomb - UPnP AV Mediaserver for Linux.
@@ -36,33 +26,30 @@ MediaTomb - UPnP AV Mediaserver for Linux.
 %prep 
 %setup -q
 %patch0 -p1 -b .init
-%patch1 -p1 -b .config
-%patch2 -p1 -b .ip
 
 %build
 # configure script doesn't know where we keep the libjs headers - AdamW 2007/06
 export JS_SEARCH_HEADERS=/usr/include/js-1.5 
-%configure
 
+%configure2_5x --enable-taglib
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-install -D -m0755 scripts/mediatomb-service-fedora %{buildroot}%{_initrddir}/%{name}
-install -D -m0755 config/mediatomb-conf-fedora %{buildroot}%{_sysconfdir}/%{name}.conf
+install -D -m 0755 scripts/mediatomb-service-fedora %{buildroot}%{_initrddir}/%{name}
+install -D -m 0755 config/mediatomb-conf-fedora %{buildroot}%{_sysconfdir}/%{name}.conf
 
 %makeinstall_std
 
-mkdir -p $RPM_BUILD_ROOT%{_logdir}
-touch $RPM_BUILD_ROOT%{_logdir}/%{name}
-install -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+mkdir -p %{buildroot}%{_logdir}
+touch %{buildroot}%{_logdir}/%{name}
+install -D -m 644 %{SOURCE1} %{buildroot}/etc/logrotate.d/%{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %pre
-
 # Create a user
 %_pre_useradd %{name} %{_localstatedir}/%{name} /bin/false
 
