@@ -54,7 +54,7 @@ rm -rf %{buildroot}
 
 %pre
 # Create a user
-%_pre_useradd %{name} %{_localstatedir}/%{name} /bin/false
+%_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/false
 
 %post
 %_post_service %{name}
