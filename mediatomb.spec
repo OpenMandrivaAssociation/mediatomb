@@ -1,12 +1,24 @@
 # Spec file taken from upstream, thanks. -AdamW 2007/06
 
+%define svn	1905
+%define rel	1
+%if %svn
+%define	release		%mkrel 0.%{svn}.%{rel}
+%define distname	%{name}-%{svn}.tar.lzma
+%define dirname		%{name}
+%else
+%define release		%mkrel %{rel}
+%define distname	%{name}-%{version}.tar.gz
+%define dirname		%{name}-%{version}
+%endif
+
 Name:		mediatomb
 Summary:	UPnP AV MediaServer 
-Version:	0.11.0
-Release:	%{mkrel 1}
+Version:	0.12.0
+Release:	%{release}
 License:	GPLv2
 Group:		Networking/Remote access
-Source0:	http://downloads.sourceforge.net/mediatomb/%{name}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/mediatomb/%{distname}
 Source1:	mediatomb.logrotate
 # Adds parallel init info to init.d script - AdamW 2007/06
 Patch0:		mediatomb-0.11.0-initinfo.patch
@@ -27,14 +39,18 @@ BuildRequires:	file
 MediaTomb - UPnP AV Mediaserver for Linux.
 
 %prep 
-%setup -q
+%setup -q -n %{dirname}
 %patch0 -p1 -b .init
 
 %build
-# configure script doesn't know where we keep the libjs headers - AdamW 2007/06
-export JS_SEARCH_HEADERS=/usr/include/js-1.5 
+%if %svn
+autoreconf -i
+%endif
 
-%configure2_5x --enable-taglib
+# configure script doesn't know where we keep the libjs headers - AdamW 2007/06
+export JS_SEARCH_HEADERS=/usr/include/js-1.70 
+
+%configure2_5x --enable-taglib --enable-external-transcoding --enable-protocolinfo-extension
 %make
 
 %install
