@@ -1,6 +1,6 @@
 # Spec file taken from upstream, thanks. -AdamW 2007/06
 
-%define svn	2068
+%define svn	0
 %define rel	1
 %if %svn
 %define	release		%mkrel 0.%{svn}.%{rel}
@@ -14,7 +14,7 @@
 
 Name:		mediatomb
 Summary:	UPnP AV MediaServer 
-Version:	0.12.0
+Version:	0.12.1
 Release:	%{release}
 License:	GPLv2
 Group:		Networking/Remote access
