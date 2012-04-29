@@ -22,6 +22,7 @@ Source0:	http://downloads.sourceforge.net/mediatomb/%{distname}
 Source1:	mediatomb.logrotate
 # Adds parallel init info to init.d script - AdamW 2007/06
 Patch0:		mediatomb-0.11.0-initinfo.patch
+Patch1:		mediatomb-0.12.1-gcc-4.7.patch
 URL:		http://mediatomb.cc
 BuildRequires:	sqlite3-devel
 BuildRequires:	magic-devel
@@ -39,7 +40,8 @@ MediaTomb - UPnP AV Mediaserver for Linux.
 
 %prep 
 %setup -q
-%patch0 -p1 -b .init
+%patch0 -p1 -b .init~
+%patch1 -p1 -b .gcc47~
 
 %build
 %if %svn
