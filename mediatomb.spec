@@ -23,10 +23,8 @@ Source1:	mediatomb.logrotate
 # Adds parallel init info to init.d script - AdamW 2007/06
 Patch0:		mediatomb-0.11.0-initinfo.patch
 URL:		http://mediatomb.cc
-Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot 
 BuildRequires:	sqlite3-devel
-BuildRequires:	libmagic-devel
-BuildRequires:	js-devel
+BuildRequires:	magic-devel
 BuildRequires:	libid3-devel
 BuildRequires:	taglib-devel
 BuildRequires:	libexif-devel
@@ -34,12 +32,13 @@ BuildRequires:	curl-devel
 BuildRequires:	ffmpeg-devel
 BuildRequires:	expat-devel
 BuildRequires:	file
+BuildRequires:	pkgconfig(libjs) >= 1.70
 
 %description
 MediaTomb - UPnP AV Mediaserver for Linux.
 
 %prep 
-%setup -q -n %{dirname}
+%setup -q
 %patch0 -p1 -b .init
 
 %build
