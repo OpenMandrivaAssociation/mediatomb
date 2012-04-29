@@ -1,7 +1,7 @@
 # Spec file taken from upstream, thanks. -AdamW 2007/06
 
 %define svn	0
-%define rel	1
+%define rel	2
 %if %svn
 %define	release		%mkrel 0.%{svn}.%{rel}
 %define distname	%{name}-%{svn}.tar.xz
