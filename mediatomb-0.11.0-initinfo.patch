@@ -1,0 +1,20 @@
+--- mediatomb-0.11.0/scripts/mediatomb-service-fedora	2008-03-01 14:48:34.000000000 -0800
++++ mediatomb-0.11.0/scripts/mediatomb-service-fedora.new	2008-03-01 19:32:26.000000000 -0800
+@@ -8,7 +8,16 @@
+ # config: /etc/mediatomb
+ # config: /etc/mediatomb/config.xml
+ # pidfile: /var/run/mediatomb.pid
+-
++### BEGIN INIT INFO
++# Provides: mediatomb
++# Required-Start: $network
++# Should-Start: $named
++# Required-Stop: $network
++# Should-Stop: $named
++# Default-Start: 2 3 4 5
++# Short-Description: Provides a UPnP service
++# Description: Mediatomb is a daemon process which provides a UPnP service.
++### END INIT INFO
+ 
+ # Source function library.
+ . /etc/rc.d/init.d/functions

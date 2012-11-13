@@ -1,0 +1,116 @@
+--- mediatomb-0.12.1/src/hash/dbo_hash.h.gcc47~	2010-03-25 15:58:07.000000000 +0100
++++ mediatomb-0.12.1/src/hash/dbo_hash.h	2012-04-29 19:28:43.335785668 +0200
+@@ -106,7 +106,7 @@ public:
+     inline bool remove(KT key)
+     {
+         struct dbo_hash_slot<KT, VT> *slot;
+-        if (! search(key, &slot))
++        if (! this->search(key, &slot))
+             return false;
+         slot->key = deletedKey;
+         slot->value->release();
+@@ -136,7 +136,7 @@ public:
+     inline void put(KT key, zmm::Ref<VT> value)
+     {
+         struct dbo_hash_slot<KT, VT> *slot;
+-        search(key, &slot);
++        this->search(key, &slot);
+         put(key, (hash_slot_t)slot, value);
+     }
+     void put(KT key, hash_slot_t destSlot, zmm::Ref<VT> value)
+@@ -162,7 +162,7 @@ public:
+     inline zmm::Ref<VT> get(KT key)
+     {
+         struct dbo_hash_slot<KT, VT> *slot;
+-        bool found = search(key, &slot);
++        bool found = this->search(key, &slot);
+         if (found)
+             return zmm::Ref<VT>(slot->value);
+         else
+@@ -174,7 +174,7 @@ public:
+     inline zmm::Ref<VT> get(KT key, hash_slot_t *destSlot)
+     {
+         struct dbo_hash_slot<KT, VT> **slot = (struct dbo_hash_slot<KT, VT> **)destSlot;
+-        bool found = search(key, slot);
++        bool found = this->search(key, slot);
+         if (found)
+             return zmm::Ref<VT>((*slot)->value);
+         else
+--- mediatomb-0.12.1/src/hash/dbr_hash.h.gcc47~	2010-03-25 15:58:07.000000000 +0100
++++ mediatomb-0.12.1/src/hash/dbr_hash.h	2012-04-29 19:29:51.404783638 +0200
+@@ -124,7 +124,7 @@ public:
+     inline bool remove(KT key)
+     {
+         struct dbr_hash_slot<KT> *slot;
+-        if (! search(key, &slot))
++        if (! this->search(key, &slot))
+             return false;
+         slot->key = deletedKey;
+         int array_slot = slot->array_slot;
+@@ -134,7 +134,7 @@ public:
+             return true;
+         }
+         data_array[array_slot] = data_array[--this->count];
+-        if (! search(data_array[array_slot], &slot))
++        if (! this->search(data_array[array_slot], &slot))
+         {
+             log_debug("DBR-Hash-Error: (%d; array_slot=%d; count=%d)\n", data_array[array_slot], array_slot, this->count);
+             throw zmm::Exception(_("DBR-Hash-Error: key in data_array not found in hashtable"));
+@@ -146,7 +146,7 @@ public:
+     inline void put(KT key)
+     {
+         struct dbr_hash_slot<KT> *slot;
+-        if (! search(key, &slot))
++        if (! this->search(key, &slot))
+         {
+ #ifdef TOMBDEBUG
+             if (this->count >= realCapacity)
+--- mediatomb-0.12.1/src/zmm/object.h.gcc47~	2010-03-25 15:58:08.000000000 +0100
++++ mediatomb-0.12.1/src/zmm/object.h	2012-04-29 19:28:43.336785668 +0200
+@@ -32,7 +32,7 @@
+ #ifndef __ZMM_OBJECT_H__
+ #define __ZMM_OBJECT_H__
+ 
+-#include <new> // for size_t
++#include <cstddef> // for size_t
+ #include "atomic.h"
+ 
+ namespace zmm
+--- mediatomb-0.12.1/src/hash/dso_hash.h.bero	2012-04-29 19:32:13.446779410 +0200
++++ mediatomb-0.12.1/src/hash/dso_hash.h	2012-04-29 19:32:25.692779037 +0200
+@@ -100,7 +100,7 @@ public:
+     inline bool remove(zmm::String key)
+     {
+         struct dso_hash_slot<VT> *slot;
+-        if (! search(key, &slot))
++        if (! this->search(key, &slot))
+             return false;
+         slot->key->release();
+         slot->value->release();
+@@ -112,7 +112,7 @@ public:
+     inline void put(zmm::String key, zmm::Ref<VT> value)
+     {
+         struct dso_hash_slot<VT> *slot;
+-        search(key, &slot);
++        this->search(key, &slot);
+         put(key, (hash_slot_t)slot, value);
+     }
+     void put(zmm::String key, hash_slot_t destSlot, zmm::Ref<VT> value)
+@@ -141,7 +141,7 @@ public:
+     inline zmm::Ref<VT> get(zmm::String key)
+     {
+         struct dso_hash_slot<VT> *slot;
+-        bool found = search(key, &slot);
++        bool found = this->search(key, &slot);
+         if (found)
+             return zmm::Ref<VT>(slot->value);
+         else
+@@ -153,7 +153,7 @@ public:
+     inline zmm::Ref<VT> get(zmm::String key, hash_slot_t *destSlot)
+     {
+         struct dso_hash_slot<VT> **slot = (struct dso_hash_slot<VT> **)destSlot;
+-        bool found = search(key, slot);
++        bool found = this->search(key, slot);
+         if (found)
+             return zmm::Ref<VT>((*slot)->value);
+         else
