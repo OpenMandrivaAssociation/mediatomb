@@ -1,0 +1,45 @@
+diff -p -up ./configure.ac.mozjs185 ./configure.ac
+--- ./configure.ac.mozjs185	2010-04-07 22:38:51.000000000 +0000
++++ ./configure.ac	2011-12-26 13:25:54.173738326 +0000
+@@ -1006,10 +1006,10 @@ if test "x$JS_OK" = xyes; then
+                             MOZLIB=smjs
+                         ],
+                         [
+-                            LDFLAGS="-L$JS_SEARCH_LIBS $LDFLAGS_SAVE -lmozjs $ADD_PTHREAD_CFLAGS"
+-                            AC_CHECK_LIB(mozjs, JS_NewObject,
++                            LDFLAGS="-L$JS_SEARCH_LIBS $LDFLAGS_SAVE -lmozjs185 $ADD_PTHREAD_CFLAGS"
++                            AC_CHECK_LIB(mozjs185, JS_NewObject,
+                                 [
+-                                    JS_LIBS="-L$JS_SEARCH_LIBS -lmozjs"
++                                    JS_LIBS="-L$JS_SEARCH_LIBS -lmozjs185"
+                                     MOZLIB=mozjs
+                                 ],
+                                 [
+@@ -1036,10 +1036,10 @@ if test "x$JS_OK" = xyes; then
+                 ],
+                 [
+                     unset ac_cv_lib_smjs_JS_NewObject
+-                    AC_CHECK_LIB(mozjs, JS_NewObject,
++                    AC_CHECK_LIB(mozjs185, JS_NewObject,
+                         [
+                             MOZLIB=mozjs
+-                            JS_LIBS="-lmozjs"
++                            JS_LIBS="-lmozjs185"
+                         ],
+                         [
+                             LDFLAGS="-L$SEARCH_DIR_LIBS $LDFLAGS_SAVE $ADD_PTHREAD_CFLAGS"
+@@ -1057,11 +1057,11 @@ if test "x$JS_OK" = xyes; then
+                                             MOZLIB=smjs
+                                         ],
+                                         [
+-                                            LDFLAGS="-L$SEARCH_DIR_LIBS $LDFLAGS_SAVE -lmozjs"
++                                            LDFLAGS="-L$SEARCH_DIR_LIBS $LDFLAGS_SAVE -lmozjs185"
+                                             unset ac_cv_lib_mozjs_JS_NewObject
+-                                            AC_CHECK_LIB(mozjs, JS_NewObject,
++                                            AC_CHECK_LIB(mozjs185, JS_NewObject,
+                                                 [
+-                                                    JS_LIBS="-L$SEARCH_DIR_LIBS -lmozjs"
++                                                    JS_LIBS="-L$SEARCH_DIR_LIBS -lmozjs185"
+                                                     MOZLIB=mozjs
+                                                 ],
+                                                 [

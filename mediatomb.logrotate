@@ -1,0 +1,6 @@
+/var/log/mediatomb {
+	create 644 root root
+	monthly
+	compress
+	missingok
+}

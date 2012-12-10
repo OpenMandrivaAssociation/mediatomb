@@ -1,5 +1,7 @@
---- mediatomb-0.12.1/src/hash/dbo_hash.h.gcc47~	2010-03-25 15:58:07.000000000 +0100
-+++ mediatomb-0.12.1/src/hash/dbo_hash.h	2012-04-29 19:28:43.335785668 +0200
+diff --git a/src/hash/dbo_hash.h b/src/hash/dbo_hash.h
+index 2e58627..16c15b3 100644
+--- a/src/hash/dbo_hash.h
++++ b/src/hash/dbo_hash.h
 @@ -106,7 +106,7 @@ public:
      inline bool remove(KT key)
      {
@@ -36,8 +38,10 @@
          if (found)
              return zmm::Ref<VT>((*slot)->value);
          else
---- mediatomb-0.12.1/src/hash/dbr_hash.h.gcc47~	2010-03-25 15:58:07.000000000 +0100
-+++ mediatomb-0.12.1/src/hash/dbr_hash.h	2012-04-29 19:29:51.404783638 +0200
+diff --git a/src/hash/dbr_hash.h b/src/hash/dbr_hash.h
+index 6e65d7f..7028890 100644
+--- a/src/hash/dbr_hash.h
++++ b/src/hash/dbr_hash.h
 @@ -124,7 +124,7 @@ public:
      inline bool remove(KT key)
      {
@@ -65,19 +69,19 @@
          {
  #ifdef TOMBDEBUG
              if (this->count >= realCapacity)
---- mediatomb-0.12.1/src/zmm/object.h.gcc47~	2010-03-25 15:58:08.000000000 +0100
-+++ mediatomb-0.12.1/src/zmm/object.h	2012-04-29 19:28:43.336785668 +0200
-@@ -32,7 +32,7 @@
- #ifndef __ZMM_OBJECT_H__
- #define __ZMM_OBJECT_H__
- 
--#include <new> // for size_t
-+#include <cstddef> // for size_t
- #include "atomic.h"
- 
- namespace zmm
---- mediatomb-0.12.1/src/hash/dso_hash.h.bero	2012-04-29 19:32:13.446779410 +0200
-+++ mediatomb-0.12.1/src/hash/dso_hash.h	2012-04-29 19:32:25.692779037 +0200
+@@ -194,7 +194,7 @@ public:
+     inline bool exists(KT key)
+     {
+         struct dbr_hash_slot<KT> *slot;
+-        return search(key, &slot);
++        return this->search(key, &slot);
+     }
+     
+     /*
+diff --git a/src/hash/dso_hash.h b/src/hash/dso_hash.h
+index adfb97f..03ec852 100644
+--- a/src/hash/dso_hash.h
++++ b/src/hash/dso_hash.h
 @@ -100,7 +100,7 @@ public:
      inline bool remove(zmm::String key)
      {

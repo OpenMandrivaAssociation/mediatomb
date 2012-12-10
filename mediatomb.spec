@@ -1,64 +1,73 @@
 # Spec file taken from upstream, thanks. -AdamW 2007/06
 
 %define svn	0
-%define rel	2
+%define rel	3
 %if %svn
-%define	release		%mkrel 0.%{svn}.%{rel}
+%define	release		0.%{svn}.%{rel}
 %define distname	%{name}-%{svn}.tar.xz
 %define dirname		%{name}
 %else
-%define release		%mkrel %{rel}
+%define release		%{rel}
 %define distname	%{name}-%{version}.tar.gz
 %define dirname		%{name}-%{version}
 %endif
 
 Name:		mediatomb
-Summary:	UPnP AV MediaServer 
+Summary:	UPnP AV MediaServer
 Version:	0.12.1
 Release:	%{release}
 License:	GPLv2
 Group:		Networking/Remote access
+URL:		http://mediatomb.cc
 Source0:	http://downloads.sourceforge.net/mediatomb/%{distname}
 Source1:	mediatomb.logrotate
 # Adds parallel init info to init.d script - AdamW 2007/06
 Patch0:		mediatomb-0.11.0-initinfo.patch
-Patch1:		mediatomb-0.12.1-gcc-4.7.patch
-Patch2:		https://launchpadlibrarian.net/71985647/libav_0.7_support.patch
-URL:		http://mediatomb.cc
-BuildRequires:	sqlite3-devel
+Patch1:		mediatomb-0.12.1-gcc46.patch
+Patch2:		mediatomb-0.12.1-gcc47.patch
+Patch3:		mediatomb-0.12.1-mozjs185.patch
+Patch4:		mediatomb-0.12.1.tonewjs.patch
+Patch5:		mediatomb-0.12.1-jsparse.patch
+Patch6:		mediatomb-0.12.1-libmp4v2.patch
+Patch7:		libav_0.7_support.patch
+BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	magic-devel
 BuildRequires:	libid3-devel
-BuildRequires:	taglib-devel
-BuildRequires:	libexif-devel
-BuildRequires:	curl-devel
+BuildRequires:	libmp4v2-devel
+BuildRequires:	pkgconfig(taglib)
+BuildRequires:	pkgconfig(libexif)
+BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	ffmpeg-devel
-BuildRequires:	expat-devel
+BuildRequires:	pkgconfig(expat)
 BuildRequires:	file
-BuildRequires:	pkgconfig(libjs) >= 1.70
+BuildRequires:	js-devel
 
 %description
 MediaTomb - UPnP AV Mediaserver for Linux.
 
-%prep 
+%prep
 %setup -q
-%patch0 -p1 -b .init~
-%patch1 -p1 -b .gcc47~
-%patch2 -p1 -b .libav07~
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
-%if %svn
-autoreconf -i
-%endif
+autoreconf -fi
+%configure2_5x \
+	--enable-taglib \
+	--enable-libjs \
+	--with-js-h=%{_includedir}/js \
+	--enable-external-transcoding \
+	--enable-protocolinfo-extension
 
-# configure script doesn't know where we keep the libjs headers - AdamW 2007/06
-export JS_SEARCH_HEADERS=/usr/include/js-1.70 
-
-%configure2_5x --enable-taglib --enable-external-transcoding --enable-protocolinfo-extension
 %make
 
 %install
-rm -rf %{buildroot}
-
 install -D -m 0755 scripts/mediatomb-service-fedora %{buildroot}%{_initrddir}/%{name}
 install -D -m 0755 config/mediatomb-conf-fedora %{buildroot}%{_sysconfdir}/%{name}.conf
 
@@ -67,9 +76,6 @@ install -D -m 0755 config/mediatomb-conf-fedora %{buildroot}%{_sysconfdir}/%{nam
 mkdir -p %{buildroot}%{_logdir}
 touch %{buildroot}%{_logdir}/%{name}
 install -D -m 644 %{SOURCE1} %{buildroot}/etc/logrotate.d/%{name}
-
-%clean
-rm -rf %{buildroot}
 
 %pre
 # Create a user
@@ -101,3 +107,4 @@ fi
 %defattr(-,%{name},%{name})
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %ghost %{_logdir}/%{name}
+
