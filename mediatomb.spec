@@ -32,7 +32,7 @@ Patch6:		mediatomb-0.12.1-libmp4v2.patch
 Patch7:		libav_0.7_support.patch
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	magic-devel
-BuildRequires:	libid3-devel
+BuildRequires:	pkgconfig(id3tag)
 BuildRequires:	libmp4v2-devel
 BuildRequires:	pkgconfig(taglib)
 BuildRequires:	pkgconfig(libexif)
