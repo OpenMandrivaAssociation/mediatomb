@@ -18,7 +18,7 @@ Version:	0.12.1
 Release:	%{release}
 License:	GPLv2
 Group:		Networking/Remote access
-URL:		http://mediatomb.cc
+URL:		https://mediatomb.cc
 Source0:	http://downloads.sourceforge.net/mediatomb/%{distname}
 Source1:	mediatomb.logrotate
 # Adds parallel init info to init.d script - AdamW 2007/06
