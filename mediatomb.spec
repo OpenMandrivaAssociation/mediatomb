@@ -30,6 +30,11 @@ Patch4:		mediatomb-0.12.1.tonewjs.patch
 Patch5:		mediatomb-0.12.1-jsparse.patch
 Patch6:		mediatomb-0.12.1-libmp4v2.patch
 Patch7:		libav_0.7_support.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	magic-devel
 BuildRequires:	pkgconfig(id3tag)
